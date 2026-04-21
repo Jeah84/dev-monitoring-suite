@@ -47,6 +47,10 @@ const db = new Pool({
 // ─── Redis Setup ─────────────────────────────────────────────
 let redisClient = null;
 async function connectRedis() {
+  if (!process.env.REDIS_URL) {
+    console.log('⚠️  REDIS_URL not set, running without cache');
+    return;
+  }
   try {
     redisClient = createClient({ url: process.env.REDIS_URL });
     redisClient.on('error', (err) => console.log('Redis error:', err));
